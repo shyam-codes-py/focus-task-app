@@ -1,116 +1,75 @@
-// 1. HTML elements ko pakadna
-const taskInput = document.getElementById('taskInput');
-const addTaskBtn = document.getElementById('addTaskBtn');
-const pendingList = document.getElementById('pendingList');
-const completedList = document.getElementById('completedList');
+// 1. Data load karna (Agar storage mein kuch ho, nahi toh empty list)
+let tasks = JSON.parse(localStorage.getItem('myTasks')) || [];
 
-// 2. Tumhare Python Backend (Kitchen) ka address
-const API_URL = 'https://focus-backend-api-mo9y.onrender.com/tasks';
+// 2. LocalStorage mein save karne ka function
+function saveData() {
+    localStorage.setItem('myTasks', JSON.stringify(tasks));
+    renderTasks();
+}
 
-// 3. Database se saare tasks lekar aana aur screen par dikhana (GET)
-async function fetchTasks() {
-    try {
-        const response = await fetch(API_URL);
-        const tasks = await response.json();
-        
-        // Screen clear karo taaki tasks double na dikhein
-        pendingList.innerHTML = '';
-        completedList.innerHTML = '';
-
-        // Tasks ko loop karke sahi column mein bhejna
-        tasks.forEach(task => {
-            const li = document.createElement('li');
-            li.className = 'task-item';
-            
-            if (task.status === 'pending') {
-                li.innerHTML = `
-                    <span class="task-text">${task.task}</span>
-                    <div style="display: flex; gap: 10px;">
-                        <button onclick="markDone(${task.id})" style="background: none; border: none; cursor: pointer; font-size: 1.2rem; color: #00bfff;" title="Mark Done">✔️</button>
-                        <button onclick="deleteTask(${task.id})" style="background: none; border: none; cursor: pointer; font-size: 1.2rem; color: #ff4d4d;" title="Delete">❌</button>
-                    </div>
-                `;
-                pendingList.appendChild(li);
-            } else {
-                li.innerHTML = `
-                    <span class="task-text" style="text-decoration: line-through; opacity: 0.5;">${task.task}</span>
-                    <div style="display: flex; gap: 10px;">
-                        <button onclick="deleteTask(${task.id})" style="background: none; border: none; cursor: pointer; font-size: 1.2rem; color: #ff4d4d;" title="Delete">❌</button>
-                    </div>
-                `;
-                completedList.appendChild(li);
-            }
-        });
-    } catch (error) {
-        console.error("Backend se data lane mein error:", error);
+// 3. Task Add karne ka logic
+function addTask() {
+    const input = document.getElementById('taskInput');
+    const text = input.value.trim();
+    
+    if (text !== "") {
+        const newTask = {
+            id: Date.now(), // Unique ID time ke hisab se
+            text: text,
+            done: false
+        };
+        tasks.push(newTask);
+        input.value = ""; // Input saaf karo
+        saveData();
     }
 }
 
-// 4. Naya Task Add karna (POST)
-async function addTask() {
-    const taskText = taskInput.value.trim();
-    if (taskText === '') return; // Agar box khali hai toh kuch mat karo
-
-    const newTask = {
-        task: taskText,
-        status: 'pending'
-    };
-
-    try {
-        const response = await fetch(API_URL, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(newTask)
-        });
-
-        if (response.ok) {
-            taskInput.value = ''; // Input box khali karo
-            fetchTasks();         // Updated list screen par dikhao
-        }
-    } catch (error) {
-        console.error("Task add karne mein error:", error);
-    }
+// 4. Task Toggle (Pending <-> Done)
+function toggleTask(id) {
+    tasks = tasks.map(task => 
+        task.id === id ? { ...task, done: !task.done } : task
+    );
+    saveData();
 }
 
-// 5. Task ko Pending se 'Done' mein move karna (PUT)
-window.markDone = async function(taskId) {
-    try {
-        const response = await fetch(`${API_URL}/${taskId}`, {
-            method: 'PUT'
-        });
+// 5. Task Delete
+function deleteTask(id) {
+    tasks = tasks.filter(task => task.id !== id);
+    saveData();
+}
 
-        if (response.ok) {
-            fetchTasks(); // UI ko refresh karo
+// 6. UI Render karne ka logic (HTML banakar board mein dalna)
+function renderTasks() {
+    const pendingList = document.getElementById('pendingList');
+    const completedList = document.getElementById('completedList');
+    
+    // List saaf karo pehle
+    pendingList.innerHTML = "";
+    completedList.innerHTML = "";
+
+    tasks.forEach(task => {
+        const li = document.createElement('li');
+        li.className = 'task-item';
+        li.innerHTML = `
+            <span class="task-text">${task.text}</span>
+            <div>
+                <button onclick="toggleTask(${task.id})">${task.done ? '↩️' : '✅'}</button>
+                <button onclick="deleteTask(${task.id})" style="color: #ff4d4d;">🗑️</button>
+            </div>
+        `;
+
+        if (task.done) {
+            completedList.appendChild(li);
+        } else {
+            pendingList.appendChild(li);
         }
-    } catch (error) {
-        console.error("Task update karne mein error:", error);
-    }
-};
+    });
+}
 
-// 6. Task ko hamesha ke liye Delete karna (DELETE)
-window.deleteTask = async function(taskId) {
-    try {
-        const response = await fetch(`${API_URL}/${taskId}`, {
-            method: 'DELETE'
-        });
-
-        if (response.ok) {
-            fetchTasks(); // UI ko refresh karo
-        }
-    } catch (error) {
-        console.error("Task delete karne mein error:", error);
-    }
-};
-
-// --- EVENTS ---
-
-// Button par click karne se task add hoga
-addTaskBtn.addEventListener('click', addTask);
-
-// Keyboard par Enter dabane se bhi task add hoga
-taskInput.addEventListener('keypress', (e) => {
+// 7. Event Listener: Enter dabane par task add ho jaye
+document.getElementById('taskInput').addEventListener('keypress', function (e) {
     if (e.key === 'Enter') addTask();
 });
 
-// App khulte hi sabse pehle database se tasks load karo
-fetchTasks();
+// Initial load
+renderTasks();
