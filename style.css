@@ -1,0 +1,176 @@
+:root {
+    /* Soothing Dark Backgrounds */
+    --bg-dark: #0b1120;       /* Deep Midnight Blue for Main BG */
+    --board-bg: #151e32;      /* Slightly lighter dark for boards */
+    
+    /* Tumhara Favorite Sky Blue Accent */
+    --sky-blue: #00bfff; 
+    --sky-blue-hover: #0099cc;
+    
+    /* Text Colors */
+    --text-main: #f1f5f9;
+    --text-muted: #94a3b8;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+body {
+    background-color: var(--bg-dark);
+    color: var(--text-main);
+    display: flex;
+    justify-content: center;
+    align-items: flex-start; 
+    min-height: 100vh;
+    padding: 2rem;
+}
+
+.app-wrapper {
+    width: 100%;
+    max-width: 1000px; 
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+.header {
+    text-align: center;
+    margin-bottom: 1rem;
+}
+
+/* Glowing Sky Blue Heading */
+.neon-heading {
+    font-size: 3rem;
+    font-weight: 700;
+    color: var(--sky-blue);
+    text-shadow: 
+        0 0 10px rgba(0, 191, 255, 0.4),
+        0 0 20px rgba(0, 191, 255, 0.2);
+    letter-spacing: 1px;
+}
+
+/* Input Section */
+.input-section {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+    max-width: 600px;
+    margin: 0 auto;
+    width: 100%;
+}
+
+input[type="text"] {
+    flex: 1;
+    background-color: var(--board-bg);
+    border: 1px solid rgba(0, 191, 255, 0.2);
+    padding: 15px 25px;
+    border-radius: 50px;
+    font-size: 1.1rem;
+    color: var(--text-main);
+    outline: none;
+    transition: 0.3s ease;
+    box-shadow: inset 0 2px 4px rgba(0,0,0, 0.2);
+}
+
+input[type="text"]:focus {
+    border-color: var(--sky-blue);
+    box-shadow: 0 0 15px rgba(0, 191, 255, 0.15), inset 0 2px 4px rgba(0,0,0, 0.2);
+}
+
+input[type="text"]::placeholder {
+    color: var(--text-muted);
+}
+
+/* Solid Sky Blue Add Button */
+.neo-btn {
+    width: 55px;
+    height: 55px;
+    border-radius: 50%;
+    border: none;
+    background-color: var(--sky-blue);
+    color: #fff;
+    font-size: 2rem;
+    cursor: pointer;
+    font-weight: 500;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: 0.3s ease;
+    box-shadow: 0 4px 15px rgba(0, 191, 255, 0.3);
+}
+
+.neo-btn:hover {
+    background-color: var(--sky-blue-hover);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0, 191, 255, 0.4);
+}
+
+.neo-btn:active {
+    transform: translateY(0);
+}
+
+/* --- THE 2-COLUMN LAYOUT --- */
+.boards-container {
+    display: flex;
+    gap: 2rem;
+    width: 100%;
+}
+
+.board {
+    flex: 1;
+    background-color: var(--board-bg);
+    padding: 2rem;
+    border-radius: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+}
+
+.board-title {
+    font-size: 1.5rem;
+    margin-bottom: 1.5rem;
+    text-align: center;
+    font-weight: 600;
+    color: var(--text-main);
+    letter-spacing: 1px;
+    border-bottom: 2px solid rgba(0, 191, 255, 0.3);
+    padding-bottom: 10px;
+}
+
+/* Task List Items */
+.task-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.task-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 20px;
+    border-radius: 12px;
+    background-color: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    transition: 0.3s ease;
+}
+
+.task-item:hover {
+    border-color: rgba(0, 191, 255, 0.4);
+    background-color: rgba(0, 191, 255, 0.05);
+}
+
+/* --- RESPONSIVE DESIGN FOR PHONE --- */
+@media (max-width: 768px) {
+    .boards-container {
+        flex-direction: column;
+    }
+    
+    .neon-heading {
+        font-size: 2.2rem;
+    }
+}
