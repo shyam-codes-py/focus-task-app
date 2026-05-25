@@ -5,7 +5,7 @@ const pendingList = document.getElementById('pendingList');
 const completedList = document.getElementById('completedList');
 
 // 2. Tumhare Python Backend (Kitchen) ka address
-const API_URL = 'http://127.0.0.1:5000/tasks';
+const API_URL = 'https://focus-backend-api-mo9y.onrender.com/tasks';
 
 // 3. Database se saare tasks lekar aana aur screen par dikhana (GET)
 async function fetchTasks() {
