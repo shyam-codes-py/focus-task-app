@@ -1,19 +1,19 @@
 :root {
-    /* Tumhara Signature Deep Dark Background */
-    --bg-color: #0a0510;
+    /* Thoda Halka Purple + Blue Mix (Twilight Indigo) */
+    --bg-color: #262445;
     
-    /* 3D Shadows - Dark side pe pure black, Light side pe Neon Blue Glow */
-    --shadow-dark: rgba(0, 0, 0, 0.9);
-    --shadow-light: rgba(0, 210, 255, 0.15);
+    /* 3D Shadows - Dark side pe deep purple-black, Light side pe Neon Blue Glow */
+    --shadow-dark: #151426;
+    --shadow-light: rgba(0, 210, 255, 0.25);
     
     /* Neon Colors */
     --neon-blue: #00d2ff;
     --neon-purple: #d500f9;
     
     /* Text Colors */
-    --text-main: #e8e8e8;
+    --text-main: #e8e8f2;
     --text-accent: var(--neon-blue);
-    --text-done: #4a4d5e;
+    --text-done: #7a7e9e;
 }
 
 * {
@@ -25,9 +25,9 @@
 
 body {
     background-color: var(--bg-color);
-    /* Halka sa background ambient glow */
-    background-image: radial-gradient(circle at top left, rgba(0, 210, 255, 0.05), transparent 50%),
-                      radial-gradient(circle at bottom right, rgba(213, 0, 249, 0.05), transparent 50%);
+    /* Halka sa ambient glow taaki purple-blue background aur premium lage */
+    background-image: radial-gradient(circle at top left, rgba(0, 210, 255, 0.08), transparent 50%),
+                      radial-gradient(circle at bottom right, rgba(213, 0, 249, 0.08), transparent 50%);
     color: var(--text-main);
     display: flex;
     justify-content: center;
@@ -86,6 +86,7 @@ input[type="text"] {
     font-size: 1.1rem;
     color: var(--text-main);
     outline: none;
+    /* 3D Gaddha (Hole) effect */
     box-shadow: 
         inset 6px 6px 10px 0 var(--shadow-dark), 
         inset -6px -6px 15px 0 var(--shadow-light);
@@ -95,11 +96,11 @@ input[type="text"] {
 input[type="text"]:focus {
     box-shadow: 
         inset 8px 8px 12px 0 var(--shadow-dark), 
-        inset -8px -8px 20px 0 rgba(0, 210, 255, 0.25); /* Focus par glow badhega */
+        inset -8px -8px 20px 0 rgba(0, 210, 255, 0.35); /* Focus par glow badhega */
 }
 
 input[type="text"]::placeholder {
-    color: #4a4d5e;
+    color: #7a7e9e;
 }
 
 /* --- 3D GLOWING POP-OUT BUTTON --- */
@@ -118,12 +119,14 @@ input[type="text"]::placeholder {
     justify-content: center;
     align-items: center;
     transition: all 0.2s ease;
+    /* 3D Utha hua (Pop-out) effect */
     box-shadow: 
         9px 9px 16px var(--shadow-dark), 
         -9px -9px 20px var(--shadow-light);
 }
 
 .neo-btn:active {
+    /* Dabaane par andar jayega */
     box-shadow: 
         inset 6px 6px 10px var(--shadow-dark), 
         inset -6px -6px 15px var(--shadow-light);
@@ -144,9 +147,10 @@ input[type="text"]::placeholder {
     background-color: var(--bg-color);
     padding: 2.5rem 2rem;
     border-radius: 30px;
+    /* Bada 3D pop-out card */
     box-shadow: 
         12px 12px 20px var(--shadow-dark), 
-        -12px -12px 25px var(--shadow-light); /* Bahar nikalta hua neon glow */
+        -12px -12px 25px var(--shadow-light); 
 }
 
 .board-title {
@@ -186,7 +190,7 @@ input[type="text"]::placeholder {
     transform: translateY(-2px);
     box-shadow: 
         8px 8px 15px var(--shadow-dark), 
-        -8px -8px 20px rgba(0, 210, 255, 0.2);
+        -8px -8px 20px rgba(0, 210, 255, 0.25);
 }
 
 .task-text {
