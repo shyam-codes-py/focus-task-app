@@ -1,15 +1,19 @@
 :root {
-    /* Soothing Dark Backgrounds */
-    --bg-dark: #0b1120;       /* Deep Midnight Blue for Main BG */
-    --board-bg: #151e32;      /* Slightly lighter dark for boards */
+    /* Tumhara Signature Deep Dark Background */
+    --bg-color: #0a0510;
     
-    /* Tumhara Favorite Sky Blue Accent */
-    --sky-blue: #00bfff; 
-    --sky-blue-hover: #0099cc;
+    /* 3D Shadows - Dark side pe pure black, Light side pe Neon Blue Glow */
+    --shadow-dark: rgba(0, 0, 0, 0.9);
+    --shadow-light: rgba(0, 210, 255, 0.15);
+    
+    /* Neon Colors */
+    --neon-blue: #00d2ff;
+    --neon-purple: #d500f9;
     
     /* Text Colors */
-    --text-main: #f1f5f9;
-    --text-muted: #94a3b8;
+    --text-main: #e8e8e8;
+    --text-accent: var(--neon-blue);
+    --text-done: #4a4d5e;
 }
 
 * {
@@ -20,11 +24,14 @@
 }
 
 body {
-    background-color: var(--bg-dark);
+    background-color: var(--bg-color);
+    /* Halka sa background ambient glow */
+    background-image: radial-gradient(circle at top left, rgba(0, 210, 255, 0.05), transparent 50%),
+                      radial-gradient(circle at bottom right, rgba(213, 0, 249, 0.05), transparent 50%);
     color: var(--text-main);
     display: flex;
     justify-content: center;
-    align-items: flex-start; 
+    align-items: flex-start;
     min-height: 100vh;
     padding: 2rem;
 }
@@ -34,112 +41,123 @@ body {
     max-width: 1000px; 
     display: flex;
     flex-direction: column;
-    gap: 2rem;
+    gap: 3rem;
 }
 
+/* --- THE GLOWING HEADING --- */
 .header {
     text-align: center;
     margin-bottom: 1rem;
 }
 
-/* Glowing Sky Blue Heading */
 .neon-heading {
     font-size: 3rem;
-    font-weight: 700;
-    color: var(--sky-blue);
+    font-weight: 800;
+    color: #ffffff; 
+    text-transform: uppercase;
+    letter-spacing: 4px;
+    /* Asli Neon Glow jo screen se bahar chamkega */
     text-shadow: 
-        0 0 10px rgba(0, 191, 255, 0.4),
-        0 0 20px rgba(0, 191, 255, 0.2);
-    letter-spacing: 1px;
+        0 0 10px var(--neon-blue),
+        0 0 20px var(--neon-blue),
+        0 0 40px var(--neon-purple),
+        4px 4px 10px var(--shadow-dark); /* Thodi 3D depth ke liye */
+    transition: all 0.3s ease;
 }
 
-/* --- UPDATED INPUT SECTION --- */
+/* --- NEON-MORPHIC INPUT SECTION --- */
 .input-section {
     display: flex;
-    gap: 15px;
+    gap: 20px;
     justify-content: center;
-    align-items: center; /* Naya: Isse input box aur button ek line mein align rahenge */
-    max-width: 600px;
+    align-items: center;
+    max-width: 650px;
     margin: 0 auto;
     width: 100%;
 }
 
+/* Input Box - Pushed INTO the screen with Neon reflection */
 input[type="text"] {
     flex: 1;
-    background-color: var(--board-bg);
-    border: 1px solid rgba(0, 191, 255, 0.2);
-    padding: 15px 25px;
+    background-color: var(--bg-color);
+    border: none;
+    padding: 18px 25px;
     border-radius: 50px;
     font-size: 1.1rem;
     color: var(--text-main);
     outline: none;
+    box-shadow: 
+        inset 6px 6px 10px 0 var(--shadow-dark), 
+        inset -6px -6px 15px 0 var(--shadow-light);
     transition: 0.3s ease;
-    box-shadow: inset 0 2px 4px rgba(0,0,0, 0.2);
 }
 
 input[type="text"]:focus {
-    border-color: var(--sky-blue);
-    box-shadow: 0 0 15px rgba(0, 191, 255, 0.15), inset 0 2px 4px rgba(0,0,0, 0.2);
+    box-shadow: 
+        inset 8px 8px 12px 0 var(--shadow-dark), 
+        inset -8px -8px 20px 0 rgba(0, 210, 255, 0.25); /* Focus par glow badhega */
 }
 
 input[type="text"]::placeholder {
-    color: var(--text-muted);
+    color: #4a4d5e;
 }
 
-/* --- UPDATED BUTTON (NO MORE SQUISH) --- */
+/* --- 3D GLOWING POP-OUT BUTTON --- */
 .neo-btn {
-    width: 50px;  /* Phone ke hisab se thoda block format set kiya */
-    height: 50px;
-    flex-shrink: 0; /* SABSE ZAROORI: Isse button phone par oval/squish nahi hoga */
+    width: 60px;
+    height: 60px;
+    flex-shrink: 0;
     border-radius: 50%;
     border: none;
-    background-color: var(--sky-blue);
-    color: #fff;
-    font-size: 1.8rem;
+    background-color: var(--bg-color);
+    color: var(--text-accent);
+    font-size: 2rem;
     cursor: pointer;
-    font-weight: 500;
+    font-weight: 600;
     display: flex;
     justify-content: center;
     align-items: center;
-    transition: 0.3s ease;
-    box-shadow: 0 4px 15px rgba(0, 191, 255, 0.3);
-}
-
-.neo-btn:hover {
-    background-color: var(--sky-blue-hover);
-    transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(0, 191, 255, 0.4);
+    transition: all 0.2s ease;
+    box-shadow: 
+        9px 9px 16px var(--shadow-dark), 
+        -9px -9px 20px var(--shadow-light);
 }
 
 .neo-btn:active {
-    transform: translateY(0);
+    box-shadow: 
+        inset 6px 6px 10px var(--shadow-dark), 
+        inset -6px -6px 15px var(--shadow-light);
+    color: #fff;
+    text-shadow: 0 0 10px var(--neon-blue);
+    transform: scale(0.95);
 }
 
-/* --- THE 2-COLUMN LAYOUT --- */
+/* --- THE NEON-MORPHIC BOARDS --- */
 .boards-container {
     display: flex;
-    gap: 2rem;
+    gap: 2.5rem;
     width: 100%;
 }
 
 .board {
     flex: 1;
-    background-color: var(--board-bg);
-    padding: 2rem;
-    border-radius: 20px;
-    border: 1px solid rgba(255, 255, 255, 0.05);
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    background-color: var(--bg-color);
+    padding: 2.5rem 2rem;
+    border-radius: 30px;
+    box-shadow: 
+        12px 12px 20px var(--shadow-dark), 
+        -12px -12px 25px var(--shadow-light); /* Bahar nikalta hua neon glow */
 }
 
 .board-title {
-    font-size: 1.5rem;
-    margin-bottom: 1.5rem;
+    font-size: 1.4rem;
+    margin-bottom: 2rem;
     text-align: center;
-    font-weight: 600;
-    color: var(--text-main);
-    letter-spacing: 1px;
-    border-bottom: 2px solid rgba(0, 191, 255, 0.3);
-    padding-bottom: 10px;
+    font-weight: 700;
+    color: var(--neon-blue);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    text-shadow: 0 0 10px rgba(0, 210, 255, 0.3);
 }
 
 /* Task List Items */
@@ -147,23 +165,53 @@ input[type="text"]::placeholder {
     list-style: none;
     display: flex;
     flex-direction: column;
-    gap: 15px;
+    gap: 1.5rem;
 }
 
+/* Individual Tasks - Smaller Pop-out cards */
 .task-item {
     display: flex;
     justify-content: space-between;
     align-items: center;
     padding: 15px 20px;
-    border-radius: 12px;
-    background-color: rgba(255, 255, 255, 0.03);
-    border: 1px solid rgba(255, 255, 255, 0.05);
-    transition: 0.3s ease;
+    border-radius: 15px;
+    background-color: var(--bg-color);
+    box-shadow: 
+        5px 5px 10px var(--shadow-dark), 
+        -5px -5px 12px var(--shadow-light);
+    transition: all 0.3s ease;
 }
 
 .task-item:hover {
-    border-color: rgba(0, 191, 255, 0.4);
-    background-color: rgba(0, 191, 255, 0.05);
+    transform: translateY(-2px);
+    box-shadow: 
+        8px 8px 15px var(--shadow-dark), 
+        -8px -8px 20px rgba(0, 210, 255, 0.2);
+}
+
+.task-text {
+    font-weight: 500;
+}
+
+/* Task Action Buttons */
+.task-item button {
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    background-color: var(--bg-color);
+    box-shadow: 
+        3px 3px 6px var(--shadow-dark), 
+        -3px -3px 8px var(--shadow-light);
+    transition: all 0.2s ease;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.task-item button:active {
+    box-shadow: 
+        inset 2px 2px 5px var(--shadow-dark), 
+        inset -2px -2px 6px var(--shadow-light);
 }
 
 /* --- RESPONSIVE DESIGN FOR PHONE --- */
