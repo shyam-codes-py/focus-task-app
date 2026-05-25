@@ -71,5 +71,8 @@ document.getElementById('taskInput').addEventListener('keypress', function (e) {
     if (e.key === 'Enter') addTask();
 });
 
+// Plus button click karne par bhi task add ho
+document.getElementById('addTaskBtn').addEventListener('click', addTask);
+
 // Initial load
 renderTasks();
