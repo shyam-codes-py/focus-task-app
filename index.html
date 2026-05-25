@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Task Management</title>
+    <title>Focus Tasks</title>
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="manifest" href="manifest.json">
@@ -12,36 +12,42 @@
 
     <div class="app-wrapper">
         <header class="header">
-            <h1 class="neon-heading">Task Management</h1>
+            <h1 class="neon-heading">Focus Tasks</h1>
         </header>
 
         <div class="input-section">
             <input type="text" id="taskInput" placeholder="Enter a new task..." autocomplete="off">
-            <button id="addTaskBtn" class="neo-btn">+</button>
+            <button id="addTaskBtn" class="neo-btn" onclick="addTask()">+</button>
+        </div>
+
+        <div style="text-align: center; margin-top: 15px;">
+            <button id="installBtn" class="neo-btn" style="display: none; padding: 10px 20px; font-size: 14px; width: 100%; max-width: 300px;">
+                📱 Install App on Phone
+            </button>
         </div>
 
         <div class="boards-container">
             <div class="board">
                 <h2 class="board-title">Tasks</h2>
-                <ul id="pendingList" class="task-list">
-                    </ul>
+                <ul id="pendingList" class="task-list"></ul>
             </div>
 
             <div class="board">
                 <h2 class="board-title">Done</h2>
-                <ul id="completedList" class="task-list">
-                    </ul>
+                <button onclick="clearCompleted()" style="background: #ff4d4d; color: white; border: none; padding: 5px 10px; border-radius: 5px; cursor: pointer; margin-bottom: 10px; font-size: 12px;">🧹 Clear All</button>
+                <ul id="completedList" class="task-list"></ul>
             </div>
         </div>
     </div>
 
     <script src="script.js"></script>
+    
     <script>
-  if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('./sw.js')
-      .then(() => console.log('App is ready for Install!'))
-      .catch((err) => console.log('Registration failed', err));
-  }
-</script>
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('./sw.js')
+                .then(() => console.log('Service Worker is Ready!'))
+                .catch((err) => console.log('Registration failed', err));
+        }
+    </script>
 </body>
 </html>
