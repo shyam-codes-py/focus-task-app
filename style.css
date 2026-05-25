@@ -53,11 +53,12 @@ body {
     letter-spacing: 1px;
 }
 
-/* Input Section */
+/* --- UPDATED INPUT SECTION --- */
 .input-section {
     display: flex;
     gap: 15px;
     justify-content: center;
+    align-items: center; /* Naya: Isse input box aur button ek line mein align rahenge */
     max-width: 600px;
     margin: 0 auto;
     width: 100%;
@@ -85,15 +86,16 @@ input[type="text"]::placeholder {
     color: var(--text-muted);
 }
 
-/* Solid Sky Blue Add Button */
+/* --- UPDATED BUTTON (NO MORE SQUISH) --- */
 .neo-btn {
-    width: 55px;
-    height: 55px;
+    width: 50px;  /* Phone ke hisab se thoda block format set kiya */
+    height: 50px;
+    flex-shrink: 0; /* SABSE ZAROORI: Isse button phone par oval/squish nahi hoga */
     border-radius: 50%;
     border: none;
     background-color: var(--sky-blue);
     color: #fff;
-    font-size: 2rem;
+    font-size: 1.8rem;
     cursor: pointer;
     font-weight: 500;
     display: flex;
