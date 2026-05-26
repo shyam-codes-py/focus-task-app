@@ -1,19 +1,21 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
 :root {
-    /* Thoda Halka Purple + Blue Mix (Twilight Indigo) */
-    --bg-color: #262445;
-    
-    /* 3D Shadows - Dark side pe deep purple-black, Light side pe Neon Blue Glow */
-    --shadow-dark: #151426;
-    --shadow-light: rgba(0, 210, 255, 0.25);
-    
-    /* Neon Colors */
-    --neon-blue: #00d2ff;
+    /* Icy Cyberpunk & Glassmorphism Theme Variables */
+    --bg-main: #050510;
+    --neon-cyan: #00d2ff;
+    --neon-blue: #3a7bd5;
     --neon-purple: #d500f9;
+    --neon-red: #ff3366;
+    --neon-green: #39ff14;
     
-    /* Text Colors */
-    --text-main: #e8e8f2;
-    --text-accent: var(--neon-blue);
-    --text-done: #7a7e9e;
+    /* Glass Effect Colors */
+    --glass-bg: rgba(255, 255, 255, 0.03);
+    --glass-border: rgba(255, 255, 255, 0.08);
+    --glass-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+    
+    --text-main: #ffffff;
+    --text-muted: #8892b0;
 }
 
 * {
@@ -24,206 +26,305 @@
 }
 
 body {
-    background-color: var(--bg-color);
-    /* Halka sa ambient glow taaki purple-blue background aur premium lage */
-    background-image: radial-gradient(circle at top left, rgba(0, 210, 255, 0.08), transparent 50%),
-                      radial-gradient(circle at bottom right, rgba(213, 0, 249, 0.08), transparent 50%);
+    background-color: var(--bg-main);
+    background-image: 
+        radial-gradient(circle at 15% 50%, rgba(0, 210, 255, 0.12), transparent 40%),
+        radial-gradient(circle at 85% 30%, rgba(58, 123, 213, 0.12), transparent 40%);
     color: var(--text-main);
+    min-height: 100vh;
     display: flex;
     justify-content: center;
     align-items: flex-start;
-    min-height: 100vh;
-    padding: 2rem;
+    padding: 40px 20px;
+    overflow-x: hidden;
 }
 
+/* =========================================
+   GLASSMORPHISM MAIN WRAPPER
+   ========================================= */
 .app-wrapper {
     width: 100%;
-    max-width: 1000px; 
-    display: flex;
-    flex-direction: column;
-    gap: 3rem;
+    max-width: 900px;
+    background: var(--glass-bg);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid var(--glass-border);
+    border-radius: 24px;
+    padding: 40px;
+    box-shadow: var(--glass-shadow);
+    animation: floatIn 1s ease-out;
 }
 
-/* --- THE GLOWING HEADING --- */
+@keyframes floatIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* --- HEADINGS --- */
 .header {
     text-align: center;
-    margin-bottom: 1rem;
+    margin-bottom: 30px;
 }
 
 .neon-heading {
-    font-size: 3rem;
-    font-weight: 800;
-    color: #ffffff; 
+    font-size: 2.8rem;
+    font-weight: 700;
+    background: linear-gradient(to right, var(--neon-cyan), var(--neon-blue));
+    -webkit-background-clip: text;
+    background-clip: text; /* Fixed the VS Code Warning permanently ✅ */
+    -webkit-text-fill-color: transparent;
+    text-shadow: 0 0 20px rgba(0, 210, 255, 0.4);
+    letter-spacing: 2px;
     text-transform: uppercase;
-    letter-spacing: 4px;
-    /* Asli Neon Glow jo screen se bahar chamkega */
-    text-shadow: 
-        0 0 10px var(--neon-blue),
-        0 0 20px var(--neon-blue),
-        0 0 40px var(--neon-purple),
-        4px 4px 10px var(--shadow-dark); /* Thodi 3D depth ke liye */
-    transition: all 0.3s ease;
 }
 
-/* --- NEON-MORPHIC INPUT SECTION --- */
+/* --- INPUT SECTION --- */
 .input-section {
     display: flex;
-    gap: 20px;
+    gap: 15px;
+    margin-bottom: 30px;
     justify-content: center;
-    align-items: center;
-    max-width: 650px;
-    margin: 0 auto;
-    width: 100%;
 }
 
-/* Input Box - Pushed INTO the screen with Neon reflection */
-input[type="text"] {
+#taskInput {
     flex: 1;
-    background-color: var(--bg-color);
-    border: none;
-    padding: 18px 25px;
-    border-radius: 50px;
-    font-size: 1.1rem;
+    max-width: 500px;
+    background: rgba(0, 0, 0, 0.4);
+    border: 1px solid var(--glass-border);
+    padding: 15px 25px;
+    border-radius: 12px;
     color: var(--text-main);
+    font-size: 16px;
     outline: none;
-    /* 3D Gaddha (Hole) effect */
-    box-shadow: 
-        inset 6px 6px 10px 0 var(--shadow-dark), 
-        inset -6px -6px 15px 0 var(--shadow-light);
-    transition: 0.3s ease;
+    transition: all 0.3s ease;
+    box-shadow: inset 0 2px 5px rgba(0,0,0,0.5);
 }
 
-input[type="text"]:focus {
-    box-shadow: 
-        inset 8px 8px 12px 0 var(--shadow-dark), 
-        inset -8px -8px 20px 0 rgba(0, 210, 255, 0.35); /* Focus par glow badhega */
+#taskInput:focus {
+    border-color: var(--neon-cyan);
+    box-shadow: 0 0 15px rgba(0, 210, 255, 0.2), inset 0 2px 5px rgba(0,0,0,0.5);
 }
 
-input[type="text"]::placeholder {
-    color: #7a7e9e;
+#taskInput::placeholder {
+    color: var(--text-muted);
 }
 
-/* --- 3D GLOWING POP-OUT BUTTON --- */
+/* --- THE MAIN '+' ADD BUTTON ANIMATION --- */
 .neo-btn {
-    width: 60px;
-    height: 60px;
-    flex-shrink: 0;
-    border-radius: 50%;
+    background: linear-gradient(45deg, var(--neon-cyan), var(--neon-blue));
+    color: #050510;
     border: none;
-    background-color: var(--bg-color);
-    color: var(--text-accent);
-    font-size: 2rem;
+    padding: 0 25px;
+    font-size: 26px;
+    font-weight: 700;
+    border-radius: 12px;
     cursor: pointer;
-    font-weight: 600;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    transition: all 0.2s ease;
-    /* 3D Utha hua (Pop-out) effect */
-    box-shadow: 
-        9px 9px 16px var(--shadow-dark), 
-        -9px -9px 20px var(--shadow-light);
+    position: relative;
+    overflow: hidden;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    box-shadow: 0 4px 15px rgba(0, 210, 255, 0.3);
+}
+
+.neo-btn:hover {
+    transform: scale(1.08) rotate(90deg); /* Mast rotation effect on hover 🔄 */
+    box-shadow: 0 0 25px rgba(0, 210, 255, 0.8);
+    color: #ffffff;
 }
 
 .neo-btn:active {
-    /* Dabaane par andar jayega */
-    box-shadow: 
-        inset 6px 6px 10px var(--shadow-dark), 
-        inset -6px -6px 15px var(--shadow-light);
-    color: #fff;
-    text-shadow: 0 0 10px var(--neon-blue);
-    transform: scale(0.95);
+    transform: scale(0.92) rotate(90deg); /* Click karne par micro-bounce compress animation 💥 */
 }
 
-/* --- THE NEON-MORPHIC BOARDS --- */
+/* --- BOARDS (TASKS & DONE) --- */
 .boards-container {
-    display: flex;
-    gap: 2.5rem;
-    width: 100%;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 30px;
+    margin-top: 20px;
 }
 
 .board {
-    flex: 1;
-    background-color: var(--bg-color);
-    padding: 2.5rem 2rem;
-    border-radius: 30px;
-    /* Bada 3D pop-out card */
-    box-shadow: 
-        12px 12px 20px var(--shadow-dark), 
-        -12px -12px 25px var(--shadow-light); 
+    background: rgba(0, 0, 0, 0.2);
+    border: 1px solid var(--glass-border);
+    border-radius: 16px;
+    padding: 20px;
+}
+
+.board-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    border-bottom: 1px solid var(--glass-border);
+    padding-bottom: 10px;
 }
 
 .board-title {
-    font-size: 1.4rem;
-    margin-bottom: 2rem;
-    text-align: center;
-    font-weight: 700;
-    color: var(--neon-blue);
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    text-shadow: 0 0 10px rgba(0, 210, 255, 0.3);
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: var(--neon-cyan);
+    letter-spacing: 1px;
 }
 
-/* Task List Items */
+/* --- TASK CARDS --- */
 .task-list {
     list-style: none;
     display: flex;
     flex-direction: column;
-    gap: 1.5rem;
+    gap: 12px;
 }
 
-/* Individual Tasks - Smaller Pop-out cards */
 .task-item {
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid var(--glass-border);
+    padding: 15px;
+    border-radius: 12px;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 15px 20px;
-    border-radius: 15px;
-    background-color: var(--bg-color);
-    box-shadow: 
-        5px 5px 10px var(--shadow-dark), 
-        -5px -5px 12px var(--shadow-light);
     transition: all 0.3s ease;
+    backdrop-filter: blur(5px);
 }
 
 .task-item:hover {
-    transform: translateY(-2px);
-    box-shadow: 
-        8px 8px 15px var(--shadow-dark), 
-        -8px -8px 20px rgba(0, 210, 255, 0.25);
+    transform: translateX(3px); /* Smooth slight slide right inside list */
+    border-color: rgba(0, 210, 255, 0.25);
+    background: rgba(255, 255, 255, 0.04);
 }
 
 .task-text {
-    font-weight: 500;
+    font-size: 0.95rem;
+    word-break: break-word;
+    color: var(--text-main);
 }
 
-/* Task Action Buttons */
-.task-item button {
-    width: 35px;
-    height: 35px;
-    border-radius: 50%;
-    background-color: var(--bg-color);
-    box-shadow: 
-        3px 3px 6px var(--shadow-dark), 
-        -3px -3px 8px var(--shadow-light);
-    transition: all 0.2s ease;
+/* Done Task Styling */
+#completedList .task-item {
+    opacity: 0.5;
+    background: transparent;
+}
+#completedList .task-text {
+    text-decoration: line-through;
+    color: var(--text-muted);
+}
+
+/* =========================================
+   ACTION BUTTONS ANIMATIONS (✅, ✏️, 🗑️)
+   ========================================= */
+.task-item div {
     display: flex;
-    justify-content: center;
+    gap: 8px;
+}
+
+.task-item button {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid var(--glass-border);
+    font-size: 14px;
+    cursor: pointer;
+    width: 34px;
+    height: 34px;
+    border-radius: 50%; /* Pure round shape button look */
+    display: flex;
     align-items: center;
+    justify-content: center;
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+/* Individual Button Neon Glow Behaviors on Hover */
+.task-item button:get-done, 
+.task-item button[onclick*="toggleTask"]:hover {
+    background: rgba(57, 255, 20, 0.1);
+    border-color: var(--neon-green);
+    box-shadow: 0 0 12px var(--neon-green);
+    transform: translateY(-2px) scale(1.12);
+}
+
+.task-item button[onclick*="editTask"]:hover {
+    background: rgba(213, 0, 249, 0.1);
+    border-color: var(--neon-purple);
+    box-shadow: 0 0 12px var(--neon-purple);
+    transform: translateY(-2px) scale(1.12);
+}
+
+.task-item button[onclick*="deleteTask"]:hover {
+    background: rgba(255, 51, 102, 0.15);
+    border-color: var(--neon-red);
+    box-shadow: 0 0 15px var(--neon-red);
+    transform: translateY(-2px) scale(1.12);
 }
 
 .task-item button:active {
-    box-shadow: 
-        inset 2px 2px 5px var(--shadow-dark), 
-        inset -2px -2px 6px var(--shadow-light);
+    transform: scale(0.9);
 }
 
-/* --- RESPONSIVE DESIGN FOR PHONE --- */
+/* --- 🧹 CLEAR ALL COMPLETED BUTTON PULSE ANIMATION --- */
+.clear-btn {
+    background: transparent;
+    color: var(--neon-red);
+    border: 1px solid var(--neon-red);
+    padding: 6px 14px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 0.8rem;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+    transition: all 0.3s ease;
+    animation: pulseBorder 2.5s infinite alternate; /* Dynamic breathing border glow 🔴 */
+}
+
+@keyframes pulseBorder {
+    0% {
+        border-color: rgba(255, 51, 102, 0.4);
+        box-shadow: 0 0 5px rgba(255, 51, 102, 0.1);
+    }
+    100% {
+        border-color: rgba(255, 51, 102, 1);
+        box-shadow: 0 0 12px rgba(255, 51, 102, 0.4);
+    }
+}
+
+.clear-btn:hover {
+    background: var(--neon-red);
+    color: #ffffff;
+    transform: translateY(-1px);
+    box-shadow: 0 0 20px rgba(255, 51, 102, 0.7);
+}
+
+/* --- MOBILE INSTALL APP BUTTON ANIMATION --- */
+.install-container {
+    text-align: center;
+    margin: 20px 0;
+}
+
+.install-btn {
+    display: none; 
+    background: linear-gradient(45deg, var(--neon-cyan), var(--neon-blue));
+    color: #050510;
+    font-weight: 600;
+    padding: 12px 30px;
+    border-radius: 50px;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(0, 210, 255, 0.3);
+}
+
+.install-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 25px rgba(0, 210, 255, 0.8);
+    color: #fff;
+}
+
+/* --- MOBILE RESPONSIVENESS --- */
 @media (max-width: 768px) {
     .boards-container {
-        flex-direction: column;
+        grid-template-columns: 1fr;
+        gap: 20px;
     }
-    
+    .app-wrapper {
+        padding: 25px 15px;
+    }
     .neon-heading {
         font-size: 2.2rem;
     }
