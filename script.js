@@ -1,69 +1,80 @@
-// 1. Data load karna (LocalStorage se)
 let tasks = JSON.parse(localStorage.getItem('myTasks')) || [];
 
-// 2. Data save karne ka function
 function saveData() {
     localStorage.setItem('myTasks', JSON.stringify(tasks));
     renderTasks();
 }
 
-// 3. Task Add Logic
+// Countdown Logic
+function getCountdownText(dateString) {
+    if (!dateString) return '';
+    const due = new Date(dateString);
+    const now = new Date();
+    const diff = due - now;
+    
+    if (diff < 0) return `<span class="countdown overdue">⚠️ Overdue!</span>`;
+    
+    const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+    const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
+    
+    if (days > 0) return `<span class="countdown">⏳ ${days}d ${hours}h left</span>`;
+    return `<span class="countdown">⏳ ${hours}h left</span>`;
+}
+
+// Add Task (V3 Logic)
 function addTask() {
     const input = document.getElementById('taskInput');
+    const category = document.getElementById('taskCategory');
+    const priority = document.getElementById('taskPriority');
+    const dueDate = document.getElementById('taskDueDate');
+    
     const text = input.value.trim();
     
     if (text !== "") {
         const newTask = {
             id: Date.now(),
             text: text,
-            done: false
+            done: false,
+            category: category.value,
+            priority: priority.value,
+            dueDate: dueDate.value
         };
         tasks.push(newTask);
-        input.value = ""; // Input saaf karo
+        input.value = ""; 
+        dueDate.value = ""; // Clear date
         saveData();
     }
 }
 
-// 4. Toggle Logic (Done <-> Pending)
 function toggleTask(id) {
-    tasks = tasks.map(task => 
-        task.id === id ? { ...task, done: !task.done } : task
-    );
+    tasks = tasks.map(task => task.id === id ? { ...task, done: !task.done } : task);
     saveData();
 }
 
-// 5. Delete Logic
 function deleteTask(id) {
     tasks = tasks.filter(task => task.id !== id);
     saveData();
 }
 
-// 6. Edit Logic (V2.0)
 function editTask(id) {
-    const taskToEdit = tasks.find(task => task.id === id);
-    if (!taskToEdit) return;
-
-    const newText = prompt("Edit your task:", taskToEdit.text);
+    const task = tasks.find(t => t.id === id);
+    if (!task) return;
+    const newText = prompt("Edit your mission:", task.text);
     if (newText !== null && newText.trim() !== "") {
-        tasks = tasks.map(task => 
-            task.id === id ? { ...task, text: newText.trim() } : task
-        );
+        tasks = tasks.map(t => t.id === id ? { ...t, text: newText.trim() } : t);
         saveData();
     }
 }
 
-// 7. Clear All Completed Tasks (V2.0)
 function clearCompleted() {
-    if (tasks.filter(task => task.done).length === 0) return; // Agar done me kuch na ho toh kuch mat karo
-
-    const areYouSure = confirm("Kya tum sach mein saare 'Done' tasks delete karna chahte ho?");
-    if (areYouSure) {
-        tasks = tasks.filter(task => task.done === false);
+    if (tasks.filter(t => t.done).length === 0) return;
+    if (confirm("Clear all completed missions?")) {
+        tasks = tasks.filter(t => t.done === false);
         saveData();
     }
 }
 
-// 8. Render Logic (Screen par list dikhana)
+// Render Logic with Sorting and Drag-and-Drop
 function renderTasks() {
     const pendingList = document.getElementById('pendingList');
     const completedList = document.getElementById('completedList');
@@ -71,12 +82,40 @@ function renderTasks() {
     pendingList.innerHTML = "";
     completedList.innerHTML = "";
 
-    tasks.forEach(task => {
+    // Sorting Logic: High priority sabse upar
+    const priorityWeights = { 'High': 3, 'Medium': 2, 'Low': 1 };
+    const sortedTasks = [...tasks].sort((a, b) => priorityWeights[b.priority] - priorityWeights[a.priority]);
+
+    sortedTasks.forEach(task => {
         const li = document.createElement('li');
-        li.className = 'task-item';
+        li.className = `task-item priority-${task.priority}`;
+        li.draggable = true; // DRAG ENABLED! 🧲
+        li.dataset.id = task.id; // ID save kar li drag ke liye
+
+        // Drag Start Event
+        li.addEventListener('dragstart', (e) => {
+            li.classList.add('dragging');
+            e.dataTransfer.setData('text/plain', task.id);
+        });
+
+        // Drag End Event
+        li.addEventListener('dragend', () => {
+            li.classList.remove('dragging');
+        });
+
         li.innerHTML = `
-            <span class="task-text">${task.text}</span>
-            <div>
+            <div class="badge-container">
+                <span class="badge badge-cat">${task.category}</span>
+                <span class="badge badge-${task.priority}">${task.priority}</span>
+            </div>
+            
+            <div class="task-top-row">
+                <span class="task-text">${task.text}</span>
+            </div>
+            
+            ${task.done ? '' : getCountdownText(task.dueDate)}
+            
+            <div class="task-actions">
                 <button onclick="toggleTask(${task.id})">${task.done ? '↩️' : '✅'}</button>
                 <button onclick="editTask(${task.id})">✏️</button>
                 <button onclick="deleteTask(${task.id})">🗑️</button>
@@ -91,38 +130,59 @@ function renderTasks() {
     });
 }
 
-// 9. Input & Button Triggers
+// --- DRAG AND DROP MAGIC (Board Listeners) ---
+const boards = document.querySelectorAll('.board');
+boards.forEach(board => {
+    // Jab koi task board ke upar hover ho
+    board.addEventListener('dragover', e => {
+        e.preventDefault(); // Drop allow karne ke liye
+        board.classList.add('drag-over'); // Glow on
+    });
+
+    // Jab task board ke bahar nikal jaye
+    board.addEventListener('dragleave', () => {
+        board.classList.remove('drag-over'); // Glow off
+    });
+
+    // Jab user task ko drop kare (chhod de)
+    board.addEventListener('drop', e => {
+        e.preventDefault();
+        board.classList.remove('drag-over');
+        
+        const id = Number(e.dataTransfer.getData('text/plain'));
+        const listId = board.querySelector('ul').id;
+        
+        // Agar "Completed" list mein drop kiya hai toh done = true kardo
+        const isDone = (listId === 'completedList');
+        
+        tasks = tasks.map(t => t.id === id ? { ...t, done: isDone } : t);
+        saveData(); // Refresh UI
+    });
+});
+
+// Triggers
 document.getElementById('taskInput').addEventListener('keypress', function (e) {
     if (e.key === 'Enter') addTask();
 });
-
 document.getElementById('addTaskBtn').addEventListener('click', addTask);
 
-// 10. --- CUSTOM INSTALL APP BUTTON LOGIC ---
+// Install App Logic
 let deferredPrompt;
 const installBtn = document.getElementById('installBtn');
-
 window.addEventListener('beforeinstallprompt', (e) => {
-    e.preventDefault();
-    deferredPrompt = e;
-    installBtn.style.display = 'inline-block'; // Button dikhao
+    e.preventDefault(); deferredPrompt = e; installBtn.style.display = 'inline-block';
 });
-
 installBtn.addEventListener('click', async () => {
     if (deferredPrompt) {
         deferredPrompt.prompt();
         const { outcome } = await deferredPrompt.userChoice;
-        if (outcome === 'accepted') {
-            console.log('App Installed Successfully!');
-        }
-        deferredPrompt = null;
-        installBtn.style.display = 'none'; // Button chupa do
+        deferredPrompt = null; installBtn.style.display = 'none';
     }
 });
+window.addEventListener('appinstalled', () => { installBtn.style.display = 'none'; });
 
-window.addEventListener('appinstalled', () => {
-    installBtn.style.display = 'none'; // Pehle se install hai toh button mat dikhao
-});
-
-// App khulte hi tasks render karo
+// Initial Render
 renderTasks();
+
+// Countdown live update hone ke liye har 1 minute baad refresh karo
+setInterval(renderTasks, 60000);

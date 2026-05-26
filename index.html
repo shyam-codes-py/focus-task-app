@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Focus Tasks - Premium PWA</title>
+    <title>Focus Tasks - Ultimate V3</title>
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="manifest" href="manifest.json">
@@ -13,7 +13,7 @@
     <nav class="portfolio-nav">
         <div class="nav-logo">Focus<span>.app</span></div>
         <ul class="nav-links">
-            <li><a href="#" class="active">Dashboard</a></li>
+            <li><a href="#" class="active" onclick="window.scrollTo({top: 0, behavior: 'smooth'}); return false;">Dashboard</a></li>
             <li><button id="installBtn" class="nav-install-btn">📱 Install</button></li>
         </ul>
     </nav>
@@ -21,23 +21,40 @@
     <div class="app-wrapper">
         <header class="header">
             <h1 class="neon-heading">Focus Tasks</h1>
-            <p class="subtitle">Manage your daily grind with style</p>
+            <p class="subtitle">Drag, Drop & Conquer Your Day</p>
         </header>
 
-        <div class="input-section">
+        <div class="input-section expanded-input">
             <input type="text" id="taskInput" placeholder="What's your next mission?..." autocomplete="off">
-            <button id="addTaskBtn" class="neo-btn">+</button>
+            
+            <div class="filter-group">
+                <select id="taskCategory" class="glass-input">
+                    <option value="Coding">💻 Coding</option>
+                    <option value="Personal">🏠 Personal</option>
+                    <option value="Urgent">🚨 Urgent</option>
+                </select>
+                
+                <select id="taskPriority" class="glass-input">
+                    <option value="Low">🟢 Low</option>
+                    <option value="Medium">🟡 Mid</option>
+                    <option value="High">🔴 High</option>
+                </select>
+                
+                <input type="datetime-local" id="taskDueDate" class="glass-input">
+                
+                <button id="addTaskBtn" class="neo-btn">+</button>
+            </div>
         </div>
 
         <div class="boards-container">
-            <div class="board">
+            <div class="board" id="pendingBoard">
                 <div class="board-header">
                     <h2 class="board-title">Active Missions</h2>
                 </div>
                 <ul id="pendingList" class="task-list"></ul>
             </div>
 
-            <div class="board">
+            <div class="board" id="completedBoard">
                 <div class="board-header">
                     <h2 class="board-title">Completed</h2>
                     <button class="clear-btn" onclick="clearCompleted()">🧹 Clear All</button>
@@ -57,9 +74,7 @@
     <script src="script.js"></script>
     <script>
         if ('serviceWorker' in navigator) {
-            navigator.serviceWorker.register('./sw.js')
-                .then(() => console.log('Service Worker Active!'))
-                .catch((err) => console.log('SW Registration failed', err));
+            navigator.serviceWorker.register('./sw.js');
         }
     </script>
 </body>
