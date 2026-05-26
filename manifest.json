@@ -3,7 +3,7 @@
   "short_name": "Focus",
   "start_url": "index.html",
   "display": "standalone",
-  "background_color": "#262445",
+  "background_color": "#050510",
   "theme_color": "#00d2ff",
   "icons": [
     {

@@ -78,8 +78,8 @@ function renderTasks() {
             <span class="task-text">${task.text}</span>
             <div>
                 <button onclick="toggleTask(${task.id})">${task.done ? '↩️' : '✅'}</button>
-                <button onclick="editTask(${task.id})" style="margin-left: 5px;">✏️</button>
-                <button onclick="deleteTask(${task.id})" style="color: #ff4d4d; margin-left: 5px;">🗑️</button>
+                <button onclick="editTask(${task.id})">✏️</button>
+                <button onclick="deleteTask(${task.id})">🗑️</button>
             </div>
         `;
 
