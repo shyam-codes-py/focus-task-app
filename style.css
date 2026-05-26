@@ -81,11 +81,39 @@ body {
 }
 #taskInput:focus { border-color: var(--neon-cyan); box-shadow: 0 0 15px rgba(0, 210, 255, 0.15); }
 .filter-group { display: flex; gap: 10px; flex-wrap: wrap; justify-content: space-between; }
+
+/* --- Glass Input Upgrade For Date & Dropdowns --- */
 .glass-input {
-    background: rgba(0, 0, 0, 0.4); border: 1px solid var(--glass-border); color: var(--text-main);
-    padding: 10px 15px; border-radius: 8px; outline: none; font-size: 0.9rem; cursor: pointer;
+    background: rgba(0, 0, 0, 0.5); 
+    border: 1px solid var(--glass-border);
+    color: var(--text-main);
+    padding: 12px 15px;
+    border-radius: 8px;
+    outline: none;
+    font-size: 0.9rem;
+    cursor: pointer;
+    min-width: 130px;
+    transition: all 0.3s ease;
 }
-.glass-input:focus { border-color: var(--neon-purple); }
+
+/* Jab input par focus ho toh solid indicator border chamke */
+.glass-input:focus {
+    border-color: var(--neon-purple);
+    box-shadow: 0 0 10px rgba(213, 0, 249, 0.3);
+}
+
+/* Mobile placeholder visibility issue fix */
+#taskDueDate {
+    position: relative;
+    color-scheme: dark; 
+}
+
+/* Mobile browsers ke default hidden selectors ko design dena */
+#taskDueDate::-webkit-calendar-picker-indicator {
+    cursor: pointer;
+    filter: invert(1);
+    opacity: 0.8;
+}
 
 .neo-btn {
     background: linear-gradient(45deg, var(--neon-cyan), var(--neon-blue)); color: #050510;
